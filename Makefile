@@ -3,54 +3,77 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edraugr- <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: edraugr- <edraugr-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/12/18 20:15:23 by edraugr-          #+#    #+#              #
-#    Updated: 2018/12/20 03:51:28 by edraugr-         ###   ########.fr        #
+#    Created: 2019/01/06 16:23:16 by sbednar           #+#    #+#              #
+#    Updated: 2019/01/18 12:53:58 by edraugr-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= fdf
+NAME		=	fdf
 
-LDIR	= ./minilibx
-LNAME	= ./minilibx/libmlx.a
-L2DIR	= ./libft
-L2NAME	= ./libft/libft.a
-L3NAME	= ./lowlvlddd/liblowlvlddd.a
-L3DIR	= ./lowlvlddd
+SRC_DIR		=	./src
+OBJ_DIR		=	./obj
 
-SRC		= $(wildcard *.c)
-OBJ		:= $(patsubst %.c,%.o,$(SRC))
-MAIN	= main.c
+DDD_DIR		=	./lowlvlddd
+MLX_DIR		=	./minilibx
+FT_DIR		=	./libft
 
-CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+SRC			= 	main.c \
+				reader.c \
+				debug.c \
+				solve.c \
+				hook_mouse_move.c
+OBJ			=	$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
+
+INCS		=	-I. -I./lowlvlddd -I./minilibx -I./libft
+LIBS		=	-L./libft -L./minilibx -L./lowlvlddd -lft -lmlx -llowlvlddd -framework OpenGL -framework AppKit
+
+CC			=	gcc
+CFLAGS		=	-Wall -Wextra -Werror -g
 
 all: $(NAME)
+	@echo "\033[92m\033[1m---> ALL DONE\033[0m\033[0m"
 
-$(NAME) : $(LNAME) $(OBJ)
-		$(CC) $(OBJ) -I. -I$(LDIR) -I$(L2DIR) -I$(L3DIR) -L$(LDIR) -L$(L2DIR) -L$(L3DIR) -lmlx -lft -llowlvlddd -framework OpenGL -framework AppKit -o $(NAME)
+$(NAME):
+	@echo "\033[91m\033[1m[1/6] \033[97m\033[1mddd all:\033[0m"
+	@$(MAKE) -C $(DDD_DIR) all
+	@echo "\033[91m\033[1m[2/6] \033[97m\033[1mmlx all:\033[0m"
+	@$(MAKE) -C $(MLX_DIR) all
+	@echo "\033[91m\033[1m[3/6] \033[97m\033[1mlibft all:\033[0m"
+	@$(MAKE) -C $(FT_DIR) all
+	@echo "\033[91m\033[1m[4/6] \033[97m\033[1mobjects folder create:\033[0m"
+	mkdir -p $(OBJ_DIR)
+	@echo "\033[91m\033[1m[5/6] \033[97m\033[1mc files compile:\033[0m"
+	@$(MAKE) $(OBJ)
+	@echo "\033[91m\033[1m[6/6] \033[97m\033[1mexecutable compile:\033[0m"
+	$(CC) $(CFLAGS) $(INCS) $(LIBS) $(OBJ) -o $(NAME)
 
-$(LNAME):
-		$(MAKE) -C $(LDIR) all
-		$(MAKE) -C $(L2DIR) all
-		$(MAKE) -C $(L3DIR) all
-
-%.o:%.c
-		$(CC)  -I. -I$(LDIR) -I$(L2DIR) -I$(L3DIR) -o $@ -c $<
+$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
 
 clean:
-		$(MAKE) -C $(LDIR) clean
-		$(MAKE) -C $(L2DIR) clean
-		$(MAKE) -C $(L2DIR) clean
-		rm -f $(OBJ)
+	@echo "\033[91m\033[1m[1/4] \033[97m\033[1mddd clean:\033[0m"
+	@$(MAKE) -C $(DDD_DIR) clean
+	@echo "\033[91m\033[1m[2/4] \033[97m\033[1mmlx clean:\033[0m"
+	@$(MAKE) -C $(MLX_DIR) clean
+	@echo "\033[91m\033[1m[3/4] \033[97m\033[1mlibft clean:\033[0m"
+	@$(MAKE) -C $(FT_DIR) clean
+	@echo "\033[91m\033[1m[4/4] \033[97m\033[1mobjects folder delete:\033[0m"
+	rm -rf $(OBJ_DIR)
+	@echo "\033[92m\033[1m---> CLEAN DONE\033[0m\033[0m"
 
 fclean: clean
-		rm -f $(LNAME)
-		rm -rf $(L2NAME)
-		rm -rf $(L3NAME)
-		rm -f $(NAME)
+	@echo "\033[91m\033[1m[1/4] \033[97m\033[1mddd full clean:\033[0m"
+	@$(MAKE) -C $(DDD_DIR) fclean
+	@echo "\033[91m\033[1m[2/4] \033[97m\033[1mmlx full clean:\033[0m"
+	@echo "\033[91m\033[1m[3/4] \033[97m\033[1mlibft full clean:\033[0m"
+	@$(MAKE) -C $(FT_DIR) fclean
+	@echo "\033[91m\033[1m[4/4] \033[97m\033[1mexecutable delete:\033[0m"
+	rm -f $(NAME)
+	@echo "\033[92m\033[1m---> FCLEAN DONE\033[0m\033[0m"
 
 re: fclean all
+	@echo "\033[92m\033[1m---> RE DONE\033[0m\033[0m"
 
 .PHONY: all clean fclean re

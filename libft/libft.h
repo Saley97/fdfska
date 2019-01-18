@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edraugr- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sbednar <sbednar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 16:55:09 by edraugr-          #+#    #+#             */
-/*   Updated: 2018/12/20 00:04:52 by edraugr-         ###   ########.fr       */
+/*   Updated: 2019/01/17 23:10:43 by sbednar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <string.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# define BUFF_SIZE 32
 
 typedef struct		s_list
 {
@@ -54,6 +58,7 @@ void				*ft_memalloc(size_t size);
 void				ft_memdel(void **ap);
 char				*ft_strnew(size_t size);
 void				ft_strdel(char **as);
+void				ft_strsdel(char ***as);
 void				ft_strclr(char *s);
 void				ft_striter(char *s, void (*f)(char *));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
@@ -91,5 +96,6 @@ int					ft_wrdscount(const char *str, const char *dlms);
 void				ft_i_love_u_peer(void);
 
 void				ft_swap(int *a, int *b);
+int                 get_next_line(const int fd, char **line);
 
 #endif

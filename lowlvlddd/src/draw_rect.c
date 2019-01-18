@@ -6,12 +6,12 @@
 /*   By: edraugr- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 18:01:41 by edraugr-          #+#    #+#             */
-/*   Updated: 2018/12/20 17:52:57 by edraugr-         ###   ########.fr       */
+/*   Updated: 2018/12/25 23:00:36 by edraugr-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lowlvlddd.h"
-#include <stdio.h>
+
 static int	draw_start_end(t_config *conf, t_info *param)
 {
 	int	x;
